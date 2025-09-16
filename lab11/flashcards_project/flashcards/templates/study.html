@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Режим изучения</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .flashcard { border: 2px solid #007bff; padding: 20px; margin: 15px 0; border-radius: 8px; }
+        .answer { display: none; color: #28a745; font-weight: bold; }
+        button { padding: 8px 15px; background: #007bff; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>🎓 Режим изучения</h1>
+    <a href="{% url 'home' %}">← Назад к списку</a>
+
+    {% for card in cards %}
+    <div class="flashcard">
+        <h3>Вопрос: {{ card.question }}</h3>
+        <p class="answer">Ответ: {{ card.answer }}</p>
+        <button onclick="toggleAnswer(this)">Показать ответ</button>
+    </div>
+    {% empty %}
+    <p>Нет карточек для изучения. <a href="{% url 'add_card' %}">Добавьте карточки!</a></p>
+    {% endfor %}
+
+    <script>
+        function toggleAnswer(btn) {
+            const answer = btn.previousElementSibling;
+            if (answer.style.display === 'none') {
+                answer.style.display = 'block';
+                btn.textContent = 'Скрыть ответ';
+            } else {
+                answer.style.display = 'none';
+                btn.textContent = 'Показать ответ';
+            }
+        }
+    </script>
+</body>
+</html>

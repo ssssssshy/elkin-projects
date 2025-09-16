@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flashcards App</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .card { 
+            border: 2px solid #007bff; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px;
+            position: relative;
+        }
+        .btn { 
+            padding: 8px 12px; 
+            margin: 5px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 Мои карточки</h1>
+    
+    <div>
+        <a href="{% url 'add_card' %}" class="btn btn-primary">➕ Добавить карточку</a>
+        <a href="{% url 'study' %}" class="btn btn-success">🎓 Изучать</a>
+    </div>
+
+    <div style="margin-top: 20px;">
+        {% for card in cards %}
+        <div class="card">
+            <!-- Кнопка удаления -->
+            <form action="{% url 'delete_card' card.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn" onclick="return confirm('Удалить эту карточку?')">✕</button>
+            </form>
+            
+            <h3>{{ card.question }}</h3>
+            <p>{{ card.answer }}</p>
+            <small>Создано: {{ card.created_at|date:"d.m.Y H:i" }}</small>
+        </div>
+        {% empty %}
+        <p>Пока нет карточек. <a href="{% url 'add_card' %}">Добавьте первую!</a></p>
+        {% endfor %}
+    </div>
+</body>
+</html>
